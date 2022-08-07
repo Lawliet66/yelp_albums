@@ -1,0 +1,77 @@
+<%- include("partials/header") %>
+<div class="container">
+  <h1>Add New Album</h1>
+<form action="/albums" method="POST">
+   
+    <div class="form-group">
+      <label for="title">Title</label>
+      <input type="text" class="form-control" name="title" autofocus placeholder="e.g Is This It">
+    
+    </div>
+    <div class="form-group">
+        <label for="description">Description</label>
+        <input type="text" class="form-control" name="description" placeholder="e.g Is This It is the debut album by NYC based...">
+      
+      </div>
+      <div class="form-group">
+        <label for="artist">Artist</label>
+        <input type="text" class="form-control" name="artist"  placeholder="e.g The Strokes">
+      
+      </div>
+      <div class="form-group">
+        <label for="trackListLength">Number of Tracks</label>
+        <input type="number" class="form-control" name="trackListLength" placeholder="e.g 11">
+      
+      </div>
+      <div class="form-group">
+        <label for="notableTracks">Notable Tracks</label>
+        <input type="text" class="form-control" name="notableTracks" placeholder="e.g Someday, Last Nite...">
+      
+      </div>
+      <div class="form-group">
+        <label for="recordLabel">Record Label</label>
+        <input type="text" class="form-control" name="recordLabel"  placeholder="e.g RCA Records">
+      
+      </div>
+      <div class="form-group">
+        <label for="date">Release Date</label>
+        <input type="date" class="form-control" name="date">
+      
+      </div>
+      <div class="form-group">
+        <label for="genre">Genre</label>
+       <select class = "form-control" name="genre" id="genre">
+        <option disabled selected>-- Choose Below--</option>
+        <option >Alternative/Indie</option>
+        <option >Punk</option>
+        <option >RnB</option>
+        <option >Garage Rock</option>
+        <option >Grunge</option>
+        <option >Nu Metal</option>
+        <option >Pop</option>
+       
+       </select>
+     
+      </div>
+      <div class="form-group">
+        <label for="image">Link to Image</label>
+        <input type="text" class="form-control" name="image" placeholder="e.g https://www.myimage.com">
+      
+      </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+  </form>
+</div>
+<!-- <h1>Add New Album</h1>
+<form action="/albums" method="POST">
+    <label for="title">Title</label>
+    <input type="description" name="title" autofocus>
+    <label for="description">Description</label>
+    <input type="text" name="description" >
+    <label for="image">Image</label>
+    <input type="text" name="image" >
+    <br>
+    <br>
+    <button type="submit">Submit</button>
+</form>-->
+
+<%- include("partials/footer") %>

@@ -1,0 +1,39 @@
+
+
+
+
+.card{
+    border: 1px solid #ddd;
+    border-radius: 1rem;
+    width: 30%;
+ 
+}
+
+.card-img{
+    width:100%;
+    height:20rem;
+    object-fit: cover;
+    border-radius: 1rem 1rem 0 0;
+}
+
+.card-title{
+    text-align: center;
+    font-family:Bebas Neue, serif;
+    font-weight:400;
+    font-size: 1.8rem;
+}
+
+.card-text{
+    
+    font-family:  Georgia, serif;
+    list-style: 1.4;
+    
+}
+
+.show_image-container img{
+    width: 80%
+}
+.box:hover {
+    box-shadow: 0 0 9px rgb(34, 21, 21); 
+    transition: box-shadow 0.5s;
+  }

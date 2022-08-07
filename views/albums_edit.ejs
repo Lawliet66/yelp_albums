@@ -1,0 +1,76 @@
+<%- include("partials/header") %>
+<div class="container">
+  <h1>Edit Album</h1>
+<form action="/albums/<%= album._id %>?_method=PUT" method="POST">
+   
+    <div class="form-group">
+      <label for="title">Title</label>
+      <input type="text" class="form-control" name="title" value="<%= album.title %>">
+    
+    </div>
+    <div class="form-group">
+        <label for="description">Description</label>
+        <input type="text" class="form-control" name="description" value="<%= album.description %>">
+      
+      </div>
+      <div class="form-group">
+        <label for="artist">Artist</label>
+        <input type="text" class="form-control" name="artist"  value="<%= album.artist %>">
+      
+      </div>
+      <div class="form-group">
+        <label for="trackListLength">Number of Tracks</label>
+        <input type="number" class="form-control" name="trackListLength" value="<%= album.trackListLength %>">
+      
+      </div>
+      <div class="form-group">
+        <label for="notableTracks">Notable Tracks</label>
+        <input type="text" class="form-control" name="notableTracks" value="<%= album.notableTracks %>">
+      
+      </div>
+      <div class="form-group">
+        <label for="recordLabel">Record Label</label>
+        <input type="text" class="form-control" name="recordLabel" value="<%= album.recordLabel %>">
+      
+      </div>
+      <div class="form-group">
+        <label for="date">Release Date</label>
+        <input type="date" class="form-control" name="date" value="<%= album.date.toISOString().split('T')[0] %>">
+      
+      </div>
+      <div class="form-group">
+        <label for="genre">Genre</label>
+       <select class = "form-control" name="genre" id="genre">
+        <option disabled>-- Choose Below--</option>
+        <option <%= album.genre === 'alternative/indie' ? 'selected':'' %>>Alternative/Indie</option>
+        <option <%= album.genre === 'punk' ? 'selected':'' %>>Punk</option>
+        <option <%= album.genre === 'rnb' ? 'selected':'' %>>RnB</option>
+        <option <%= album.genre === 'garage rock' ? 'selected':'' %>>Garage Rock</option>
+        <option <%= album.genre === 'grunge' ? 'selected':'' %>>Grunge</option>
+        <option <%= album.genre === 'nu metal' ? 'selected':'' %>>Nu Metal</option>
+        <option <%= album.genre === 'pop' ? 'selected':'' %>>Pop</option>
+       </select>
+     
+      </div>
+      <div class="form-group">
+        <label for="image">Link to Image</label>
+        <input type="text" class="form-control" name="image" value="<%= album.image %>">
+      
+      </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+  </form>
+</div>
+<!-- <h1>Add New Album</h1>
+<form action="/albums" method="POST">
+    <label for="title">Title</label>
+    <input type="description" name="title" autofocus>
+    <label for="description">Description</label>
+    <input type="text" name="description" >
+    <label for="image">Image</label>
+    <input type="text" name="image" >
+    <br>
+    <br>
+    <button type="submit">Submit</button>
+</form>-->
+
+<%- include("partials/footer") %>

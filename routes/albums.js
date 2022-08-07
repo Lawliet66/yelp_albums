@@ -1,0 +1,132 @@
+import express from 'express'
+import Album from '../models/album.js'
+import Comment from '../models/comment.js'
+import isLoggedIn from '../utils/isLoggedIn.js'
+import checkAlbumOwner from '../utils/checkAlbumOwner.js'
+const router = express.Router();
+
+router.get("/", async (req,res)=>{
+   // console.log(req.user)
+    try{
+    const foundAlbums= await Album.find().exec()
+    res.render("albums.ejs",{albums:foundAlbums})
+    }
+    catch(err){
+        console.log(err)
+    }
+ 
+})
+
+router.post("/", isLoggedIn, async (req,res)=>{
+   const genre = req.body.genre.toLowerCase()
+    const newAlbum={
+        title: req.body.title,
+        description: req.body.description,
+        artist: req.body.artist,
+        trackListLength: req.body.trackListLength,
+        notableTracks:req.body.notableTracks,
+        recordLabel: req.body.recordLabel,
+        date : req.body.date,
+        genre: genre,
+        image : req.body.image,
+        owner:{
+            id:req.user._id,
+            username:req.user.username
+        }
+    }
+    try{
+    const createdAlbum = await Album.create(newAlbum)
+    res.redirect("/albums/" +createdAlbum._id)
+    }
+    catch(err){
+        console.log(err)
+    }
+    
+   
+ 
+})
+
+router.get("/new",isLoggedIn,(req,res)=>{
+    res.render("albums_new.ejs")
+})
+
+
+router.get("/search",async (req,res)=>{
+    try{
+        const albums = await Album.find({
+            $text:{
+                $search:req.query.term
+            }
+        })
+        res.render("albums.ejs",{albums})
+    }
+    catch(err){
+        console.log(err)
+        res.send("Error search not working")
+    }
+})
+
+router.get("/:id", async (req,res)=>{
+try{
+const album = await Album.findById(req.params.id).exec()   
+const comments = await Comment.find({albumId:req.params.id})       
+res.render("albums_show.ejs",{album,comments})
+}
+catch(err){
+    console.log(err)
+    res.send("Broke album display")
+}
+        
+
+})
+
+router.get("/:id/edit", checkAlbumOwner,isLoggedIn, async (req,res)=>{
+  
+        const album= await Album.findById(req.params.id)
+        .exec()
+      
+         res.render("albums_edit.ejs",{album})
+     
+   
+})
+
+router.put("/:id",  checkAlbumOwner,isLoggedIn,async (req,res)=>{
+    const genre = req.body.genre.toLowerCase();
+    const album={
+        title: req.body.title,
+        description: req.body.description,
+        artist: req.body.artist,
+        trackListLength: req.body.trackListLength,
+        notableTracks:req.body.notableTracks,
+        recordLabel: req.body.recordLabel,
+        date : req.body.date,
+        genre: genre,
+        image : req.body.image
+    }
+    try{
+    const updatedalbum= await Album.findByIdAndUpdate(req.params.id, album, {new:true}).exec()
+   
+     res.redirect(`/albums/${req.params.id}`);
+    }
+    
+    catch(err){
+        console.log(err)
+        res.send("Error putting editted album")
+    }
+})
+
+router.delete("/:id",checkAlbumOwner,isLoggedIn,async (req,res)=>{
+    
+    try{
+    const deletedAlbum = await Album.findByIdAndDelete(req.params.id).exec()
+    res.redirect("/albums")
+    }
+    catch(err){
+        console.log(err)
+        res.send("Error deleting album")
+    }
+})
+
+
+
+export default router;
