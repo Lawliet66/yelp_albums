@@ -66,6 +66,20 @@ router.get("/search",async (req,res)=>{
     }
 })
 
+router.get("/genre/:genreName", async(req,res)=>{
+    
+    
+    const validGenres =["alternative-indie","punk","rnb","garage rock","grunge","nu metal","pop"]
+    if(validGenres.includes(req.params.genreName.toLowerCase())){
+        const albums = await Album.find({genre:req.params.genreName}).exec()
+        res.render("albums.ejs",{albums})
+    }
+    else[
+        res.send("Please enter a valid genre")
+    ]
+})
+
+
 router.get("/:id", async (req,res)=>{
 try{
 const album = await Album.findById(req.params.id).exec()   
