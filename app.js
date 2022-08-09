@@ -7,6 +7,7 @@ import morgan from 'morgan'
 import passport from 'passport'
 import passportLocal from 'passport-local'
 import expressSession from 'express-session'
+import flash from 'connect-flash'
 //Model imports
 import Album from './models/album.js'
 import Comment from './models/comment.js'
@@ -37,6 +38,7 @@ app.use(methodOverride('_method'))
 app.use(morgan('tiny'))
 app.use(expressSession({secret:"skjfsnjkdfbfdjkberaulsnkjdvbeiau",resave:false,saveUninitialized:false}))
 
+app.use(flash());
 
 
 app.use(passport.initialize())
