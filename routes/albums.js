@@ -36,10 +36,12 @@ router.post("/", isLoggedIn, async (req,res)=>{
     }
     try{
     const createdAlbum = await Album.create(newAlbum)
+    req.flash("success","Album created")
     res.redirect("/albums/" +createdAlbum._id)
     }
     catch(err){
-        console.log(err)
+        req.flash("error","Error creating album")
+        res.redirect("/albums")
     }
     
    
@@ -82,7 +84,7 @@ router.get("/genre/:genreName", async(req,res)=>{
 
 router.get("/:id", async (req,res)=>{
 try{
-const album = await Album.findById(req.params.id).exec()   
+const album = await Album.findById(req.params.id ).exec()   
 const comments = await Comment.find({albumId:req.params.id})       
 res.render("albums_show.ejs",{album,comments})
 }
@@ -119,13 +121,13 @@ router.put("/:id",  checkAlbumOwner,isLoggedIn,async (req,res)=>{
     }
     try{
     const updatedalbum= await Album.findByIdAndUpdate(req.params.id, album, {new:true}).exec()
-   
+    req.flash("success","Album updated")
      res.redirect(`/albums/${req.params.id}`);
     }
     
     catch(err){
-        console.log(err)
-        res.send("Error putting editted album")
+        req.flash("error","Album updated")
+        res.redirect("/albums")
     }
 })
 
@@ -133,10 +135,11 @@ router.delete("/:id",checkAlbumOwner,isLoggedIn,async (req,res)=>{
     
     try{
     const deletedAlbum = await Album.findByIdAndDelete(req.params.id).exec()
+    req.flash("success","Album deleted")
     res.redirect("/albums")
     }
     catch(err){
-        console.log(err)
+        req.flash("error","Error Deleting album")
         res.send("Error deleting album")
     }
 })

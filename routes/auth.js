@@ -12,10 +12,11 @@ router.get("/signup",(req,res)=>{
 router.post("/signup", async (req,res)=>{
     try{
         const newUser = await User.register(new User({username:req.body.username, email:req.body.email}),req.body.password)
-        console.log(newUser)
+ 
         passport.authenticate('local')(req,res,()=>{
             res.redirect('/albums')
         })
+      
     }
     catch(err){
         console.log(err)
@@ -31,7 +32,9 @@ router.get("/login",(req,res)=>{
 
 router.post("/login", passport.authenticate('local',{
     successRedirect:'/albums',
-    failureRedirect:'/login'
+    failureRedirect:'/login',
+    failureFlash: true,
+    successFlash: "Logged in successfully"
 }))
 
 //Log Out
