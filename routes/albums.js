@@ -83,6 +83,12 @@ router.get("/genre/:genreName", async(req,res)=>{
     ]
 })
 
+router.post("/vote",isLoggedIn,(req,res)=>{
+    res.json({
+        message:"Voted"
+    })
+})
+
 
 router.get("/:id", async (req,res)=>{
 try{
