@@ -34,7 +34,7 @@ router.post("/login", passport.authenticate('local',{
     successRedirect:'/albums',
     failureRedirect:'/login',
     failureFlash: true,
-    successFlash: "Logged in successfully"
+    successFlash: true
 }))
 
 //Log Out
