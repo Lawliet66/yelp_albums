@@ -83,10 +83,69 @@ router.get("/genre/:genreName", async(req,res)=>{
     ]
 })
 
-router.post("/vote",isLoggedIn,(req,res)=>{
-    res.json({
-        message:"Voted"
-    })
+router.post("/vote",isLoggedIn, async (req,res)=>{
+   
+    const album = await Album.findById(req.body.albumId)
+    const alreadyUpvoted = album.upvotes.indexOf(req.user.username)
+    const alreadyDownvoted = album.downvotes.indexOf(req.user.username)
+
+    let response ={}
+    if(alreadyUpvoted ===-1 && alreadyDownvoted ===-1){
+        if(req.body.voteType ==='up'){
+            album.upvotes.push(req.user.username)
+            album.save()
+            response = {message:"Upvote Tallied",code:1}
+        }
+        else if(req.body.voteType==='down'){
+            album.downvotes.push(req.user.username)
+            album.save()
+            response = {message:"Downvote Tallied",code:-1}
+        }
+        else{
+            response = {message:"Error 1",code:"err"}
+        }
+    }
+    else if(alreadyUpvoted>=0){
+        if(req.body.voteType==='up'){
+            album.upvotes.splice(alreadyUpvoted,1)
+            album.save()
+            response = {message:"Upvote Removed",code:0}
+        }
+        else if(req.body.voteType ==='down'){
+            album.upvotes.splice(alreadyUpvoted,1)
+            album.downvotes.push(req.user.username)
+            album.save()
+            response = {message:"Downvote Tallied and Upvote Removed",code:-1}
+        }
+        else{
+            response = {message:"Error 2",code:"err"}
+        }
+    }
+    else if(alreadyDownvoted>=0){
+        if(req.body.voteType==='up'){
+            album.downvotes.splice(alreadyUpvoted,1)
+            album.upvotes.push(req.user.username)
+            album.save()
+            response = {message:"Upvote Tallied and DownVote Removed",code:1}
+           
+        }
+        else if(req.body.voteType ==='down'){
+            album.downvotes.splice(alreadyUpvoted,1)
+            album.save()
+            response = {message:"Downvote Removed",code:0}
+        }
+        else{
+            response = {message:"Error 3",code:"err"}
+        }
+    }
+    else{
+        response = {message:"Error 4",code:"err"}
+    }
+
+    response.score = album.upvotes.length-album.downvotes.length
+    res.json(
+        response
+    )
 })
 
 

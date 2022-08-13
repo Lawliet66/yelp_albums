@@ -3,7 +3,7 @@ import express from 'express'
 import bodyParser from 'body-parser'
 import mongoose from 'mongoose'
 import methodOverride from 'method-override'
-import morgan from 'morgan'
+//import morgan from 'morgan'
 import passport from 'passport'
 import passportLocal from 'passport-local'
 import expressSession from 'express-session'
@@ -33,9 +33,14 @@ import authRoutes from './routes/auth.js'
 
 const app = express("view engine","ejs")
 app.use(express.static('public'))
+app.use(express.json({type:["application/json","text/plain"]}))
+//app.use(express.urlencoded({extended:true}))
+app.use(express.urlencoded({ extended: false }));
+app.use(express.json());
+//app.use(bodyParser.json({type:["application/json","text/plain"]}))
 app.use(bodyParser.urlencoded({extended:true}))
 app.use(methodOverride('_method'))
-app.use(morgan('tiny'))
+//app.use(morgan('tiny'))
 app.use(expressSession({secret:"skjfsnjkdfbfdjkberaulsnkjdvbeiau",resave:false,saveUninitialized:false}))
 
 app.use(flash());
