@@ -83,6 +83,38 @@ router.get("/genre/:genreName", async(req,res)=>{
     ]
 })
 
+
+
+router.post("/favorites",isLoggedIn, async(req,res)=>{
+    const user = await req.user
+    const album = await Album.findById(req.body.albumId)
+    console.log(user.username)
+    console.log(album._id)
+    console.log(user.favorites)
+    const inFavorites = user.favorites.indexOf(album._id)
+   // console.log(inFavorites)
+    let response={}
+    if(inFavorites===-1){
+        user.favorites.push(album._id)
+        user.save()
+        response ={message:"Added to favorites", code:1}
+        console.log(user.favorites)
+    }
+    else if(inFavorites>=0){
+        user.favorites.splice(inFavorites,1) 
+        user.save()
+        response ={message:"Removed from favorites", code:0}
+        console.log(user.favorites)
+        console.log("removed")
+    }
+    else{
+        response ={message:"Error", code:-1}
+    }
+    res.json(
+        response
+    )
+})
+
 router.post("/vote",isLoggedIn, async (req,res)=>{
    
     const album = await Album.findById(req.body.albumId)

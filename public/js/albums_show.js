@@ -1,6 +1,7 @@
 const upvoteBtn = document.getElementById("upvote_btn")
 const downvoteBtn = document.getElementById("downvote_btn")
 const score = document.getElementById("score")
+const favoriteBtn = document.getElementById("add_favorite")
 
 
 const sendVote = async(voteType)=>{
@@ -21,6 +22,7 @@ const sendVote = async(voteType)=>{
     }
     await fetch("/albums/vote",options)
     .then(data =>{
+      //  console.log(data.json())
         return data.json()
     })
     .then(res=>{
@@ -58,6 +60,53 @@ const handleVote = (newScore,code)=>{
     }
 }
 
+const sendFav = async()=>{
+    const options={
+        method:"POST",
+        headers:{
+            'Content-Type':'application/json'
+        }
+    }
+    options.body = JSON.stringify({albumId})
+
+    await fetch("/albums/favorites",options)
+    .then(data =>{
+      //  console.log(data.json())
+        return data.json()
+    })
+    .then(res=>{
+     //   console.log(res.code)
+        handleFavorite(res.code)
+    })
+    .catch(err=>{
+        console.log(err)
+    })
+}
+
+handleFavorite=(code)=>{
+    
+    if(code===1){
+        favoriteBtn.innerText = "Remove From Favorites"
+        favoriteBtn.classList.remove("btn-outline-primary")
+        favoriteBtn.classList.add("btn-dark")
+      //  favoriteBtn.classList.add("btn-outline-dark")
+        
+    }
+    else if(code===0){
+        favoriteBtn.innerText = "Add to Favorites"
+        favoriteBtn.classList.add("btn-outline-primary")
+        favoriteBtn.classList.remove("btn-outline-dark")
+        favoriteBtn.classList.remove("btn-dark")
+    }
+    else{
+        console.lof("error in handle fav")
+    }
+}
+
+
+favoriteBtn.addEventListener("click",async function(){
+    sendFav()
+})
 
 upvoteBtn.addEventListener("click",async function(){
    
