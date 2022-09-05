@@ -11,7 +11,7 @@
                 <h1><%=album.title%></h1>
           </div>  
           <div class="col-3">
-          <% if(user && user.favorites.indexOf(album._id)>=0){ %>
+          <% if(user && user.favorites.findIndex(item=>item.favid===album._id.toString())>=0){ %>
               <button id="add_favorite" class="btn btn-dark  btn-sm ">Remove From Favorite</button>
              
           <% } else if(user){%>

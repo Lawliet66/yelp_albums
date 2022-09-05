@@ -91,11 +91,11 @@ router.post("/favorites",isLoggedIn, async(req,res)=>{
     console.log(user.username)
     console.log(album._id)
     console.log(user.favorites)
-    const inFavorites = user.favorites.indexOf(album._id)
+    const inFavorites = user.favorites.findIndex(item=>item.favid===album._id.toString())
    // console.log(inFavorites)
     let response={}
     if(inFavorites===-1){
-        user.favorites.push(album._id)
+        user.favorites.push({favid:album._id.toString(),image:album.image,title:album.title})
         user.save()
         response ={message:"Added to favorites", code:1}
         console.log(user.favorites)

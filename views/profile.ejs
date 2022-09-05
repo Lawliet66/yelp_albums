@@ -1,0 +1,25 @@
+<%- include("partials/header") %>
+
+<div class="container">
+    <h1>Profile</h1>
+    <p  >Username: <%=user.username%></p>
+    <h4>Favorites</h4>
+    <div class="row">
+    <% if(albums.length!=0){ %>  
+    <% albums.forEach((album => { %>
+            <div class="col-2 show_image-fav">
+               <a href="/albums/<%=album.favid%>"><img src="<%=album.image%>" alt="Image of one of the user's favorite albums"></a> 
+            </div>
+    <%} ))%>
+    <div class="col-2 my-5">
+        <a href="/profile/favorites">See all</a>
+    </div>
+    </div>
+    <%}else{%>
+        <div class="col-2"><p>No favorites</p></div>
+        
+    <%}%>
+
+</div>
+
+<%- include("partials/footer") %>

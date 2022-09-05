@@ -2,7 +2,7 @@ import mongoose from 'mongoose'
 import passportLocalMongoose from 'passport-local-mongoose'
 
 const userSchema = new mongoose.Schema({
-    favorites:[String],
+    favorites:[{favid:String, image:String, title:String}],
     email: {type:String, required:true, unique:true},
     username: {type:String, required:true, unique:true}
 })
