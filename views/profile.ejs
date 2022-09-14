@@ -3,8 +3,8 @@
 <div class="container">
     <h1>Profile</h1>
     <p  >Username: <%=user.username%></p>
-    <h4>Favorites</h4>
-    <div class="row">
+    <div><a href="/profile/<%=user.username%>/lists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/new"><h6>Create New List</h6></a></div> 
+    <h5>Favorites</h5>
     <% if(albums.length!=0){ %>  
     <% albums.forEach((album => { %>
             <div class="col-2 show_image-fav">
@@ -16,10 +16,13 @@
     </div>
     </div>
     <%}else{%>
-        <div class="col-2"><p>No favorites</p></div>
+        <div class="col-12"><p>No favorites</p></div>
         
     <%}%>
-
+   
+ 
+    
+    
 </div>
 
 <%- include("partials/footer") %>

@@ -1,6 +1,7 @@
 import express from 'express'
 const router = express.Router({mergeParams:true});
 import User from '../models/user.js'
+import List from '../models/list.js'
 import passport from 'passport'
 
 //Sign up
@@ -12,6 +13,17 @@ router.get("/signup",(req,res)=>{
 router.post("/signup", async (req,res)=>{
     try{
         const newUser = await User.register(new User({username:req.body.username, email:req.body.email}),req.body.password)
+        const newList={
+            owner:{
+                id:newUser._id,
+                username:newUser.username
+            },
+            Name:"Favorites",
+            Description:"",
+            Albums:[]
+        }
+        const listCreated = await List.create(newList)
+      //  const newList = await List.
  
         passport.authenticate('local')(req,res,()=>{
             res.redirect('/albums')

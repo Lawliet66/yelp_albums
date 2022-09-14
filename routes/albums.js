@@ -1,6 +1,7 @@
 import express from 'express'
 import Album from '../models/album.js'
 import Comment from '../models/comment.js'
+import List from '../models/list.js'
 import isLoggedIn from '../utils/isLoggedIn.js'
 import checkAlbumOwner from '../utils/checkAlbumOwner.js'
 const router = express.Router();
@@ -83,28 +84,32 @@ router.get("/genre/:genreName", async(req,res)=>{
     ]
 })
 
-
-
-router.post("/favorites",isLoggedIn, async(req,res)=>{
+///Testing
+router.post("/lists/:listName",isLoggedIn, async(req,res)=>{
     const user = await req.user
     const album = await Album.findById(req.body.albumId)
+  //  console.log(req.params.listName)
     console.log(user.username)
-    console.log(album._id)
-    console.log(user.favorites)
-    const inFavorites = user.favorites.findIndex(item=>item.favid===album._id.toString())
+    console.log(user._id)
+   // console.log(user.favorites)
+    const list = await List.findOne({ Name:req.params.listName,owner:{id:user._id,username:user.username} })
+    console.log(list)
+    console.log(list.Albums)
+    const inAlbums = list.Albums.findIndex(item=>item.id===album._id.toString())
+    console.log(inAlbums)
    // console.log(inFavorites)
     let response={}
-    if(inFavorites===-1){
-        user.favorites.push({favid:album._id.toString(),image:album.image,title:album.title})
-        user.save()
-        response ={message:"Added to favorites", code:1}
-        console.log(user.favorites)
+    if(inAlbums===-1){
+        list.Albums.push({id:album._id.toString(),image:album.image,title:album.title})
+        list.save()
+        response ={message:"Added to list", code:1}
+        console.log(list.Albums)
     }
-    else if(inFavorites>=0){
-        user.favorites.splice(inFavorites,1) 
-        user.save()
-        response ={message:"Removed from favorites", code:0}
-        console.log(user.favorites)
+    else if(inAlbums>=0){
+        list.Albums.splice(inAlbums,1) 
+        list.save()
+        response ={message:"Removed from list", code:0}
+        console.log(list.Albums)
         console.log("removed")
     }
     else{
@@ -114,6 +119,40 @@ router.post("/favorites",isLoggedIn, async(req,res)=>{
         response
     )
 })
+
+
+//Back when favorites was an array in users schema, now it is part of the lists table
+//Refactored Route
+// router.post("/favorites",isLoggedIn, async(req,res)=>{
+//     const user = await req.user
+//     const album = await Album.findById(req.body.albumId)
+//     console.log(user.username)
+//     console.log(album._id)
+//     console.log(user.favorites)
+//     const inFavorites = user.favorites.findIndex(item=>item.favid===album._id.toString())
+//    // console.log(inFavorites)
+//     let response={}
+//     if(inFavorites===-1){
+//         user.favorites.push({favid:album._id.toString(),image:album.image,title:album.title})
+//         user.save()
+//         response ={message:"Added to favorites", code:1}
+//         console.log(user.favorites)
+//     }
+//     else if(inFavorites>=0){
+//         user.favorites.splice(inFavorites,1) 
+//         user.save()
+//         response ={message:"Removed from favorites", code:0}
+//         console.log(user.favorites)
+//         console.log("removed")
+//     }
+//     else{
+//         response ={message:"Error", code:-1}
+//     }
+//     res.json(
+//         response
+//     )
+// })
+//End of refactored route
 
 router.post("/vote",isLoggedIn, async (req,res)=>{
    

@@ -28,6 +28,7 @@ import mainRoutes from './routes/main.js'
 //import seed from './utils/seed.js'
 import authRoutes from './routes/auth.js'
 import profileRoutes from './routes/profile.js'
+import listRoutes from './routes/lists.js'
 
 //seed()
 //import fetch from 'node-fetch'
@@ -66,6 +67,7 @@ app.use("/",authRoutes)
 app.use("/profile",profileRoutes)
 app.use("/albums",albumRoutes)
 app.use("/albums/:id/comments",commentRoutes)
+app.use("/profile/:username/lists",listRoutes)
 
 
 app.listen(3000,(req,res)=>{
